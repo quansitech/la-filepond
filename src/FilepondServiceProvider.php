@@ -2,6 +2,7 @@
 namespace Qs\La\Filepond;
 
 use Illuminate\Support\ServiceProvider;
+use Qs\La\Filepond\Middleware\RegisterFilter;
 
 class FilepondServiceProvider extends ServiceProvider{
 
@@ -22,24 +23,4 @@ class FilepondServiceProvider extends ServiceProvider{
         Filepond::boot();
     }
 
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        $this->registerMiddleware();
-    }
-
-    protected function registerMiddleware(){
-        app('router')->aliasMiddleware(self::MIDDLEWARE_UPLOADFILE_FILTER, RegisterFilter::class);
-
-        if(app('router')->hasMiddlewareGroup('admin')){
-            $adminMiddleGroup = app('router')->getMiddlewareGroups()['admin'];
-            array_push($adminMiddleGroup, self::MIDDLEWARE_EXTEND);
-            app('router')->middlewareGroup('admin', $adminMiddleGroup);
-        }
-
-    }
 }

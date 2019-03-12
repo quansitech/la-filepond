@@ -1,0 +1,7 @@
+.idea
+vendor/
+composer.lock
+.php_cs.cache
+build/
+tests/Browser/console
+tests/Browser/screenshots

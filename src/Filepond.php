@@ -1,6 +1,7 @@
 <?php
 namespace Qs\La\Filepond;
 
+use Encore\Admin\Admin;
 use Encore\Admin\Extension;
 use Encore\Admin\Form;
 use Illuminate\Support\Facades\Artisan;
@@ -22,6 +23,7 @@ class Filepond extends Extension {
         if(parent::boot()){
 
             Form::extend('filepondFile', File::class);
+            Admin::extend('filepond', __CLASS__);
         }
     }
 
