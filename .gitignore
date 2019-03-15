@@ -5,3 +5,5 @@ composer.lock
 build/
 /tests/Browser/console/*
 /tests/Browser/screenshots/*
+!/tests/Browser/console
+!/tests/Browser/screenshots
