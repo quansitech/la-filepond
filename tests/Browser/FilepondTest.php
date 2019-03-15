@@ -17,14 +17,14 @@ class FilepondTest extends BrowserTestCase{
             $browser->loginAs(Administrator::find(1), 'admin')
                 ->visit('/admin/filepond/create')
                 ->type('name', 'test')
-                ->waitFor('.filepond--root');
+                ->waitFor('.filepond--root', 10);
 
             $imagesElm = $browser->element('.images__')->findElement(WebDriverBy::cssSelector("input[type=file]"));
 
             $avatarElm = $browser->element('.avatar')->findElement(WebDriverBy::cssSelector("input[type=file]"));
 
             $browser->attach('#' . $imagesElm->getAttribute('id'), __DIR__ . '/../TestFiles/sample.jpeg')
-            ->waitFor(".images__ .filepond--item:first-child .filepond--action-process-item[style*='opacity:1']")
+            ->waitFor(".images__ .filepond--item:first-child .filepond--action-process-item[style*='opacity:1']", 10)
             ->assertSeeIn(".images__ .filepond--item:first-child legend", "sample.jpeg")
             ->press(".images__ .filepond--item:first-child .filepond--action-process-item")
             ->waitFor('.images__ .filepond--item:first-child .filepond--action-revert-item-processing', 10)
@@ -35,9 +35,9 @@ class FilepondTest extends BrowserTestCase{
             $this->assertIsString($images);
 
             $browser->attach('#' . $imagesElm->getAttribute('id'), __DIR__ . '/../TestFiles/sample2.jpg')
-            ->waitForText("File is too large")
+            ->waitForText("File is too large", 10)
             ->attach('#' . $avatarElm->getAttribute('id'), __DIR__ . '/../TestFiles/sample.jpeg')
-            ->waitFor(".avatar .filepond--item:first-child .filepond--action-process-item[style*='opacity:1']")
+            ->waitFor(".avatar .filepond--item:first-child .filepond--action-process-item[style*='opacity:1']", 10)
             ->press(".avatar .filepond--item:first-child .filepond--action-process-item")
             ->waitFor('.avatar .filepond--item:first-child .filepond--action-revert-item-processing', 10)
             ->assertSeeIn(".avatar .filepond--item:first-child .filepond--file-status-main", "Upload complete");
@@ -63,7 +63,7 @@ class FilepondTest extends BrowserTestCase{
         $this->browse(function ($browser){
             $browser->loginAs(Administrator::find(1), 'admin')
                 ->visit('admin/filepond/1/edit')
-                ->waitFor(".images__ .filepond--item .filepond--action-remove-item[style*='opacity:1']")
+                ->waitFor(".images__ .filepond--item .filepond--action-remove-item[style*='opacity:1']", 10)
                 ->press('.images__ .filepond--action-remove-item')
                 ->waitUntilMissing('.images__ .filepond--action-remove-item')
                 ->press('button[type=submit]')->waitFor('.table tbody tr:first-child', 10);
