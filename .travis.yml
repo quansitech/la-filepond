@@ -18,16 +18,16 @@ addons:
 
 before_install:
   - sudo mysql -e 'create database if not exists homestead;'
-  - mysql -e "use mysql; update user set authentication_string=PASSWORD('secret') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
-  - mysql_upgrade -u root -psecret
-  - service mysql restart
-  - apt-get -y install zip wget unzip xdg-utils libxpm4 libxrender1 libgtk2.0-0 libnss3 libgconf-2-4 xvfb gtk2-engines-pixbuf xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable x11-apps
-  - wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-  - dpkg -i --force-depends google-chrome-stable_current_amd64.deb
-  - apt-get -y -f install
-  - wget https://chromedriver.storage.googleapis.com/2.42/chromedriver_linux64.zip
-  - unzip chromedriver_linux64.zip
-  - mv chromedriver /usr/local/bin/
+  - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('secret') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
+  - sudo mysql_upgrade -u root -psecret
+  - sudo service mysql restart
+  - sudo apt-get -y install zip wget unzip xdg-utils libxpm4 libxrender1 libgtk2.0-0 libnss3 libgconf-2-4 xvfb gtk2-engines-pixbuf xfonts-cyrillic xfonts-100dpi xfonts-75dpi xfonts-base xfonts-scalable x11-apps
+  - sudo wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+  - sudo dpkg -i --force-depends google-chrome-stable_current_amd64.deb
+  - sudo apt-get -y -f install
+  - sudo wget https://chromedriver.storage.googleapis.com/2.42/chromedriver_linux64.zip
+  - sudo unzip chromedriver_linux64.zip
+  - sudo mv chromedriver /usr/local/bin/
 
 
 before_script:
