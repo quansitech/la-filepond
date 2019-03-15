@@ -49,27 +49,27 @@ class FilepondTest extends BrowserTestCase{
         $this->assertDatabaseHas("posts", ['images' => DB::raw("json_array('{$images}')"), 'avatar' => $avatar]);
     }
 
-    public function testUpdate(){
-        File::makeDirectory(storage_path('app/public/files'));
-        File::copy(__DIR__ . '/../TestFiles/sample.jpeg', storage_path('app/public/files/sample.jpeg'));
-        File::copy(__DIR__ . '/../TestFiles/sample.jpeg', storage_path('app/public/files/sample1.jpeg'));
-
-        $post = new Post();
-        $post->name = 'test';
-        $post->images = ['files/sample.jpeg'];
-        $post->avatar = 'files/sample1.jpeg';
-        $post->save();
-
-        $this->browse(function ($browser){
-            $browser->loginAs(Administrator::find(1), 'admin')
-                ->visit('admin/filepond/1/edit')
-                ->waitFor(".images__ .filepond--item .filepond--action-remove-item[style*='opacity:1']", 10)
-                ->press('.images__ .filepond--action-remove-item')
-                ->waitUntilMissing('.images__ .filepond--action-remove-item')
-                ->press('button[type=submit]')->waitFor('.table tbody tr:first-child', 10);
-        });
-
-        $post = Post::find(1);
-        $this->assertTrue(empty($post->images));
-    }
+//    public function testUpdate(){
+//        File::makeDirectory(storage_path('app/public/files'));
+//        File::copy(__DIR__ . '/../TestFiles/sample.jpeg', storage_path('app/public/files/sample.jpeg'));
+//        File::copy(__DIR__ . '/../TestFiles/sample.jpeg', storage_path('app/public/files/sample1.jpeg'));
+//
+//        $post = new Post();
+//        $post->name = 'test';
+//        $post->images = ['files/sample.jpeg'];
+//        $post->avatar = 'files/sample1.jpeg';
+//        $post->save();
+//
+//        $this->browse(function ($browser){
+//            $browser->loginAs(Administrator::find(1), 'admin')
+//                ->visit('admin/filepond/1/edit')
+//                ->waitFor(".images__ .filepond--item .filepond--action-remove-item[style*='opacity:1']", 10)
+//                ->press('.images__ .filepond--action-remove-item')
+//                ->waitUntilMissing('.images__ .filepond--action-remove-item')
+//                ->press('button[type=submit]')->waitFor('.table tbody tr:first-child', 10);
+//        });
+//
+//        $post = Post::find(1);
+//        $this->assertTrue(empty($post->images));
+//    }
 }
