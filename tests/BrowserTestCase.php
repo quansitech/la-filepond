@@ -129,10 +129,10 @@ class BrowserTestCase extends TestCase {
         $env = str_replace('APP_KEY=', 'APP_KEY=' . $this->app['config']['app.key'], $env);
 //        $env = str_replace('DB_CONNECTION=mysql', 'DB_CONNECTION=sqlite' , $env);
 //        $env = str_replace('DB_DATABASE=homestead', 'DB_DATABASE=' . database_path("database.sqlite"), $env);
-        $env = str_replace('DB_HOST=127.0.0.1', 'DB_HOST=mysql', $env);
+        $env = str_replace('DB_HOST=127.0.0.1', 'DB_HOST=' . $this->app['config']['database.connections.mysql.host'], $env);
 
-        $env = str_replace('DB_USERNAME=homestead', 'DB_USERNAME=root' , $env);
-        $env = str_replace('DB_PASSWORD=secret123', 'DB_PASSWORD=root' , $env);
+        $env = str_replace('DB_USERNAME=homestead', 'DB_USERNAME='. $this->app['config']['database.connections.mysql.username'] , $env);
+        $env = str_replace('DB_PASSWORD=secret123', 'DB_PASSWORD=' . $this->app['config']['database.connections.mysql.password'] , $env);
         File::put(base_path('.env'), $env);
 
 //        $this->app['config']->set('database.default', 'sqlite');

@@ -44,7 +44,7 @@ class FilepondTest extends BrowserTestCase{
 
             $avatar = $browser->element("input[name=avatar]")->getAttribute("value");
 
-            $browser->press('Submit')->waitFor('.table tbody tr:first-child');
+            $browser->press('Submit')->waitFor('.table tbody tr:first-child', 10);
         });
         $this->assertDatabaseHas("posts", ['images' => DB::raw("json_array('{$images}')"), 'avatar' => $avatar]);
     }
