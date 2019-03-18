@@ -29,10 +29,10 @@ class BrowserTestCase extends TestCase {
      * @beforeClass
      * @return void
      */
-    public static function prepare()
-    {
-        static::startChromeDriver();
-    }
+//    public static function prepare()
+//    {
+//        static::startChromeDriver();
+//    }
 
     /**
      * 创建 RemoteWebDriver 实例
@@ -70,6 +70,7 @@ class BrowserTestCase extends TestCase {
     }
 
     public function setUp() : void{
+        static::startChromeDriver();
         $this->makeInstalledJson();
 
         parent::setUp();
@@ -87,6 +88,8 @@ class BrowserTestCase extends TestCase {
         $this->copyTestFiles();
 
         $this->runServer();
+
+        //$this->userLogout();
     }
 
     public function tearDown() : void
@@ -94,10 +97,16 @@ class BrowserTestCase extends TestCase {
 //        $this->uninstallLA();
 
         $this->uninstallLaravel();
-
+        static::tearDownDuskClass();
         //$this->clearInstalledJson();
 
         parent::tearDown();
+    }
+
+    protected function userLogout(){
+        $this->browse(function($browser){
+            $browser->logout('admin');
+        });
     }
 
     protected function copyTestFiles(){

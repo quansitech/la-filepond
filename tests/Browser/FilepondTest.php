@@ -24,23 +24,23 @@ class FilepondTest extends BrowserTestCase{
             $avatarElm = $browser->element('.avatar')->findElement(WebDriverBy::cssSelector("input[type=file]"));
 
             $browser->attach('#' . $imagesElm->getAttribute('id'), __DIR__ . '/../TestFiles/sample.jpeg')
-            ->waitFor(".images__ .filepond--item:first-child .filepond--action-process-item[style*='opacity:1']", 10)
-            ->assertSeeIn(".images__ .filepond--item:first-child legend", "sample.jpeg")
-            ->press(".images__ .filepond--item:first-child .filepond--action-process-item")
-            ->waitFor('.images__ .filepond--item:first-child .filepond--action-revert-item-processing', 10)
-            ->assertSeeIn(".images__ .filepond--item:first-child .filepond--file-status-main", "Upload complete");
+                ->waitFor(".images__ .filepond--item:first-child .filepond--action-process-item[style*='opacity:1']", 10)
+                ->assertSeeIn(".images__ .filepond--item:first-child legend", "sample.jpeg")
+                ->press(".images__ .filepond--item:first-child .filepond--action-process-item")
+                ->waitFor('.images__ .filepond--item:first-child .filepond--action-revert-item-processing', 10)
+                ->assertSeeIn(".images__ .filepond--item:first-child .filepond--file-status-main", "Upload complete");
 
             $images = $browser->element("input[name='images[]']")->getAttribute("value");
 
             $this->assertIsString($images);
 
             $browser->attach('#' . $imagesElm->getAttribute('id'), __DIR__ . '/../TestFiles/sample2.jpg')
-            ->waitForText("File is too large", 10)
-            ->attach('#' . $avatarElm->getAttribute('id'), __DIR__ . '/../TestFiles/sample.jpeg')
-            ->waitFor(".avatar .filepond--item:first-child .filepond--action-process-item[style*='opacity:1']", 10)
-            ->press(".avatar .filepond--item:first-child .filepond--action-process-item")
-            ->waitFor('.avatar .filepond--item:first-child .filepond--action-revert-item-processing', 10)
-            ->assertSeeIn(".avatar .filepond--item:first-child .filepond--file-status-main", "Upload complete");
+                ->waitForText("File is too large", 10)
+                ->attach('#' . $avatarElm->getAttribute('id'), __DIR__ . '/../TestFiles/sample.jpeg')
+                ->waitFor(".avatar .filepond--item:first-child .filepond--action-process-item[style*='opacity:1']", 10)
+                ->press(".avatar .filepond--item:first-child .filepond--action-process-item")
+                ->waitFor('.avatar .filepond--item:first-child .filepond--action-revert-item-processing', 10)
+                ->assertSeeIn(".avatar .filepond--item:first-child .filepond--file-status-main", "Upload complete");
 
             $avatar = $browser->element("input[name=avatar]")->getAttribute("value");
 
@@ -72,4 +72,8 @@ class FilepondTest extends BrowserTestCase{
         $post = Post::find(1);
         $this->assertTrue(empty($post->images));
     }
+
+
+
+
 }
