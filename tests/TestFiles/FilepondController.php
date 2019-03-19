@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
@@ -8,20 +9,24 @@ use Encore\Admin\Form;
 use Encore\Admin\Grid;
 use Encore\Admin\Layout\Content;
 
-class FilepondController extends Controller{
+class FilepondController extends Controller
+{
     use HasResourceActions;
 
-    public function index(Content $content){
+    public function index(Content $content)
+    {
         return $content
             ->body($this->grid()->render());
     }
 
-    public function create(Content $content){
+    public function create(Content $content)
+    {
         return $content->body($this->form());
     }
 
-    protected  function form(){
-        return new Form(new Post(), function($form){
+    protected function form()
+    {
+        return new Form(new Post(), function ($form) {
             $form->text('name', 'name');
             $form->filepondFile('images', 'images')->multiple()->mineType('image/*')->size(30);
             $form->filepondFile('avatar', 'avatar')->rules('required')->mineType(['image/png', 'image/jpeg']);
@@ -39,6 +44,7 @@ class FilepondController extends Controller{
         $grid = new Grid(new Post());
         $grid->id('ID')->sortable();
         $grid->name()->editable();
+
         return $grid;
     }
 }

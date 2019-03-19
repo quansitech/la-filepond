@@ -1,18 +1,17 @@
 <?php
+
 namespace Qs\La\Filepond;
 
 use Encore\Admin\Form;
 use Encore\Admin\Form\Field;
-use http\Exception\RuntimeException;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
 
-class File extends Field {
-
+class File extends Field
+{
     const FILE_UPLOAD_FLAG = '_filepond_upload_';
 
     protected $view = 'laravel-admin-filepond::filepond';
@@ -60,9 +59,9 @@ class File extends Field {
     protected $storage_permission;
 
     /**
-     *  if upload validator is fail, then return response
+     *  if upload validator is fail, then return response.
      *
-     * @var  Response
+     * @var Response
      */
     protected $uploadValidatorResponse;
 
@@ -87,12 +86,12 @@ class File extends Field {
         '/vendor/laravel-admin-ext/la-filepond/js/filepond-plugin-file-validate-size.min.js',
         '/vendor/laravel-admin-ext/la-filepond/js/filepond-plugin-file-validate-type.min.js',
         '/vendor/laravel-admin-ext/la-filepond/js/filepond.min.js?v=3.8.2',
-        '/vendor/laravel-admin-ext/la-filepond/js/filepond.jquery.js'
+        '/vendor/laravel-admin-ext/la-filepond/js/filepond.jquery.js',
     ];
 
     protected static $plugins = [
         'FilePondPluginFileValidateType',
-        'FilePondPluginFileValidateSize'
+        'FilePondPluginFileValidateSize',
     ];
 
     protected static $renderPlugin = false;
@@ -107,7 +106,6 @@ class File extends Field {
      * @var array
      */
     protected $options = [];
-
 
     public function __construct($column, array $arguments = [])
     {
@@ -178,7 +176,6 @@ class File extends Field {
 
         return $this->directory ?: $this->defaultDirectory();
     }
-
 
     /**
      * Generate a unique name for uploaded file.
@@ -253,6 +250,7 @@ class File extends Field {
 
         $this->setupSubmittedCb();
         $this->setupSavingCb();
+
         return $this;
     }
 
@@ -265,40 +263,39 @@ class File extends Field {
      */
     public function prepare($value)
     {
-        if(is_array($value)){
-
-            return tap($value, function(&$val){
+        if (is_array($value)) {
+            return tap($value, function (&$val) {
                 $val = collect($val)->filter()->flatten()->all();
             });
-
         }
-
 
         return $value;
     }
 
-    protected function setupDefaultOptions(){
+    protected function setupDefaultOptions()
+    {
         $defaultOptions = [
             'instantUpload' => false,
-            'labelIdle' => trans('filepond.label'),
+            'labelIdle'     => trans('filepond.label'),
         ];
 
         $this->options($defaultOptions);
     }
 
-    public function formatInput($form){
-        if(!$form->input($this->column())){
+    public function formatInput($form)
+    {
+        if (!$form->input($this->column())) {
             $form->input($this->column(), []);
         }
     }
 
-    protected function setupSavingCb(){
-        if(self::$injectSavingCb === false){
-            $this->form->saving(function($form){
+    protected function setupSavingCb()
+    {
+        if (self::$injectSavingCb === false) {
+            $this->form->saving(function ($form) {
                 $data = Input::all();
                 if (!array_key_exists(File::FILE_UPLOAD_FLAG, $data)) {
                     foreach ($form->builder()->fields() as $field) {
-
                         if (get_class($field) == File::class) {
                             $field->formatInput($form);
                         }
@@ -310,25 +307,26 @@ class File extends Field {
         }
     }
 
-
-    protected function setupSubmittedCb(){
-        if(self::$injectSubmittedCb === false){
-            $this->form->submitted(function($form){
+    protected function setupSubmittedCb()
+    {
+        if (self::$injectSubmittedCb === false) {
+            $this->form->submitted(function ($form) {
                 $data = Input::all();
 
                 if (array_key_exists(File::FILE_UPLOAD_FLAG, $data)) {
                     $field = File::getFieldFromInput($data, $form);
 
                     $validator = $field->getUploadValidator($data);
-                    if(($validator instanceof \Illuminate\Validation\Validator) && !$validator->passes() && $field->uploadValidatorResponse instanceof Response){
+                    if (($validator instanceof \Illuminate\Validation\Validator) && !$validator->passes() && $field->uploadValidatorResponse instanceof Response) {
                         return $field->uploadValidatorResponse;
                     }
 
-                    foreach($data as $k => $v){
+                    foreach ($data as $k => $v) {
                         $uploadFile = File::formatFile($v);
-                        if($uploadFile instanceof  UploadedFile){
+                        if ($uploadFile instanceof  UploadedFile) {
                             $field->name = $field->getStoreName($uploadFile);
                             $path = $field->upload($uploadFile);
+
                             return response()->json(['classSelector' => $field->getElementClassSelector(), 'id' => $path]);
                         }
                     }
@@ -357,7 +355,6 @@ class File extends Field {
         return $this->storage->putFileAs($this->getDirectory(), $file, $this->name);
     }
 
-
     /**
      * If name already exists, rename it.
      *
@@ -379,28 +376,33 @@ class File extends Field {
         }
 
         $pattern = "/required[^\|]?(\||$)/";
+
         return preg_match($pattern, $this->rules) ? true : false;
     }
 
-
-    public function mineType($mType){
-        $this->options(['acceptedFileTypes' => (array)$mType]);
-        if(is_array($mType)){
+    public function mineType($mType)
+    {
+        $this->options(['acceptedFileTypes' => (array) $mType]);
+        if (is_array($mType)) {
             $mType = implode(',', $mType);
         }
-        $this->rules('mimetypes:' . $mType);
+        $this->rules('mimetypes:'.$mType);
+
         return $this;
     }
 
     //file size unit KB
-    public function size($size){
-        $this->options(['maxFileSize' => $size . "KB"]);
-        $this->rules('max:' . $size);;
+    public function size($size)
+    {
+        $this->options(['maxFileSize' => $size.'KB']);
+        $this->rules('max:'.$size);
+
         return $this;
     }
 
-    protected function getUploadValidator(array $input){
-        if(!array_key_exists(File::FILE_UPLOAD_FLAG, $input)){
+    protected function getUploadValidator(array $input)
+    {
+        if (!array_key_exists(self::FILE_UPLOAD_FLAG, $input)) {
             return false;
         }
 
@@ -410,13 +412,12 @@ class File extends Field {
             return $this->validator->call($this, $input);
         }
 
-
-        if(!array_key_exists($this->column, $input)){
+        if (!array_key_exists($this->column, $input)) {
             return false;
         }
 
         $file = array_get($input, $this->column);
-        if(array_has($input, $this->column) && is_array($file)){
+        if (array_has($input, $this->column) && is_array($file)) {
             $input[$this->column] = $file[0];
         }
 
@@ -428,8 +429,8 @@ class File extends Field {
 
         $validator = Validator::make($input, $rules, $this->validationMessages, $attributes);
 
-        $validator->after(function($validator){
-            if(!$validator->errors()->isEmpty()){
+        $validator->after(function ($validator) {
+            if (!$validator->errors()->isEmpty()) {
                 $content = view($this->getView(), $this->variables())->withErrors($validator->messages());
                 $this->uploadValidatorResponse = response($content, 500)->send();
             }
@@ -438,18 +439,16 @@ class File extends Field {
         return $validator;
     }
 
-
     /**
      * {@inheritdoc}
      */
     public function getValidator(array $input)
     {
-
         $attributes = [];
 
         $attributes[$this->column] = $this->label;
 
-        if(!array_key_exists(File::FILE_UPLOAD_FLAG, $input)){
+        if (!array_key_exists(self::FILE_UPLOAD_FLAG, $input)) {
             /*
          * Make input data validatable if the column data is `null`.
          */
@@ -458,64 +457,68 @@ class File extends Field {
             }
 
             //form editable mode, no validation
-            if(array_key_exists('_editable', $input)){
+            if (array_key_exists('_editable', $input)) {
                 return false;
             }
 
-            return $this->existsRequiredRule() ? Validator::make($input, [$this->column => 'required'], $this->validationMessages, $attributes)  : false;
-
+            return $this->existsRequiredRule() ? Validator::make($input, [$this->column => 'required'], $this->validationMessages, $attributes) : false;
         }
 
         return false;
     }
 
-    public static  function getFieldFromInput($input, $form){
-        foreach($input as $column => $value){
+    public static function getFieldFromInput($input, $form)
+    {
+        foreach ($input as $column => $value) {
             $file = self::formatFile($value);
 
-            if($file instanceof UploadedFile){
-                return $form->builder()->fields()->first(function($field, $key) use ($column){
+            if ($file instanceof UploadedFile) {
+                return $form->builder()->fields()->first(function ($field, $key) use ($column) {
                     return $field->column == $column;
                 });
             }
         }
     }
 
-    public static function formatFile($file){
-        if(is_array($file)){
+    public static function formatFile($file)
+    {
+        if (is_array($file)) {
             return $file[0];
-        }
-        else{
+        } else {
             return $file;
         }
     }
 
-
-    public function multiple(){
+    public function multiple()
+    {
         $this->attribute('multiple', 'true');
-        $this->setElementName($this->column . '[]');
+        $this->setElementName($this->column.'[]');
+
         return $this;
     }
 
-    public static function extendPluginJs($jses = []){
+    public static function extendPluginJs($jses = [])
+    {
         $jsc = collect(self::$js);
-        foreach((array)$jses as $js){
+        foreach ((array) $jses as $js) {
             $jsc->prepend($js);
         }
         self::$js = $jsc->unique()->all();
     }
 
-    public static function extendPluginCss($csses = []){
+    public static function extendPluginCss($csses = [])
+    {
         $cssc = collect(self::$css);
-        foreach((array)$csses as $css){
+        foreach ((array) $csses as $css) {
             $cssc->prepend($css);
         }
         self::$css = $cssc->unique()->all();
     }
 
-    public static function extendPlugin($plugins = []){
+    public static function extendPlugin($plugins = [])
+    {
         $pluginc = collect(self::$plugins);
-        foreach((array)$plugins as $plugin){
+        foreach ((array) $plugins as $plugin) {
             $pluginc->push($plugin);
         }
         self::$plugins = $pluginc->unique()->all();
@@ -528,22 +531,22 @@ class File extends Field {
         return $this;
     }
 
-    protected function renderMethod(){
-        if($this->form->builder()->isMode(Form\Builder::MODE_EDIT)){
-            return <<<EOT
+    protected function renderMethod()
+    {
+        if ($this->form->builder()->isMode(Form\Builder::MODE_EDIT)) {
+            return <<<'EOT'
 formdata.append('_method', 'put');
 EOT;
         }
     }
 
-
-    public function render(){
-
+    public function render()
+    {
         $this->setupDefaultOptions();
 
         $filepondFiles = [];
-        foreach((array)old($this->column, $this->value()) as $file){
-            if($file){
+        foreach ((array) old($this->column, $this->value()) as $file) {
+            if ($file) {
                 $filepondFile['source'] = $file;
                 $filepondFile['options'] = ['type' => 'local'];
                 $filepondFiles[] = $filepondFile;
@@ -554,9 +557,8 @@ EOT;
 
         $options = json_encode($this->options);
 
-        if(count(self::$plugins)>0 && self::$renderPlugin === false){
-
-            $plugins = join(',', self::$plugins);
+        if (count(self::$plugins) > 0 && self::$renderPlugin === false) {
+            $plugins = implode(',', self::$plugins);
 
             $csrfToken = csrf_token();
             $uploadKey = self::FILE_UPLOAD_FLAG;
@@ -604,7 +606,6 @@ $.fn.filepond.setDefaults({
 EOT;
             self::$renderPlugin = true;
         }
-
 
         $this->script .= <<<EOT
 
