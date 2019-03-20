@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
+use Illuminate\Support\Arr;
 
 class File extends Field
 {
@@ -117,7 +118,7 @@ class File extends Field
     /**
      * Initialize the storage instance.
      *
-     * @return void.
+     * @return void
      */
     protected function initStorage()
     {
@@ -416,7 +417,7 @@ class File extends Field
             return false;
         }
 
-        $file = array_get($input, $this->column);
+        $file = Arr::get($input, $this->column);
         if (array_has($input, $this->column) && is_array($file)) {
             $input[$this->column] = $file[0];
         }
