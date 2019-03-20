@@ -3,9 +3,9 @@
 namespace Qs\La\Filepond;
 
 use Encore\Admin\Form;
-use Illuminate\Support\Arr;
 use Encore\Admin\Form\Field;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
