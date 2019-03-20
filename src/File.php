@@ -3,13 +3,13 @@
 namespace Qs\La\Filepond;
 
 use Encore\Admin\Form;
+use Illuminate\Support\Arr;
 use Encore\Admin\Form\Field;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Symfony\Component\HttpFoundation\Response;
-use Illuminate\Support\Arr;
 
 class File extends Field
 {
@@ -418,7 +418,7 @@ class File extends Field
         }
 
         $file = Arr::get($input, $this->column);
-        if (array_has($input, $this->column) && is_array($file)) {
+        if (Arr::has($input, $this->column) && is_array($file)) {
             $input[$this->column] = $file[0];
         }
 
@@ -453,7 +453,7 @@ class File extends Field
             /*
          * Make input data validatable if the column data is `null`.
          */
-            if (array_has($input, $this->column) && is_null(array_get($input, $this->column))) {
+            if (Arr::has($input, $this->column) && is_null(Arr::get($input, $this->column))) {
                 $input[$this->column] = '';
             }
 
