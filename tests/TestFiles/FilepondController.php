@@ -28,8 +28,10 @@ class FilepondController extends Controller
     {
         return new Form(new Post(), function ($form) {
             $form->text('name', 'name');
-            $form->filepondFile('images', 'images')->multiple()->mineType('image/*')->size(30);
-            $form->filepondFile('avatar', 'avatar')->rules('required')->mineType(['image/png', 'image/jpeg']);
+            $form->filepondImage('images', 'images')->multiple();
+            $form->filepondImage('avatar', 'avatar')->rules('required')->size(30);
+            $form->filepondFile('files', 'files')->multiple()->mineType(['application/msword', 'application/pdf'])->rules('required');
+            $form->filepondFile('file', 'file')->size(30);
         });
     }
 

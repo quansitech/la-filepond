@@ -73,6 +73,7 @@ class File extends Field
      */
     protected static $css = [
         '/vendor/laravel-admin-ext/la-filepond/css/filepond.min.css?v=3.8.2',
+        '/vendor/laravel-admin-ext/la-filepond/css/filepond-plugin-image-preview.min.css'
     ];
 
     protected $rules = 'file';
@@ -86,6 +87,7 @@ class File extends Field
         '/vendor/laravel-admin-ext/la-filepond/js/json_parse_state.js',
         '/vendor/laravel-admin-ext/la-filepond/js/filepond-plugin-file-validate-size.min.js',
         '/vendor/laravel-admin-ext/la-filepond/js/filepond-plugin-file-validate-type.min.js',
+        '/vendor/laravel-admin-ext/la-filepond/js/filepond-plugin-image-preview.min.js',
         '/vendor/laravel-admin-ext/la-filepond/js/filepond.min.js?v=3.8.2',
         '/vendor/laravel-admin-ext/la-filepond/js/filepond.jquery.js',
     ];
@@ -113,6 +115,7 @@ class File extends Field
         $this->initStorage();
 
         parent::__construct($column, $arguments);
+
     }
 
     /**
@@ -540,6 +543,7 @@ formdata.append('_method', 'put');
 EOT;
         }
     }
+
 
     public function render()
     {

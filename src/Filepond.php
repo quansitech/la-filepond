@@ -23,6 +23,7 @@ class Filepond extends Extension
     {
         if (parent::boot()) {
             Form::extend('filepondFile', File::class);
+            Form::extend('filepondImage', Image::class);
             Admin::extend('filepond', __CLASS__);
         }
     }
