@@ -54,7 +54,7 @@ class FilepondTest extends BrowserTestCase
                 ->waitFor(".images__ .filepond--item:nth-child(1) .filepond--action-remove-item[style*='opacity:1']", 10)
                 ->assertSeeIn('.images__ .filepond--item:nth-child(1) .filepond--file-status-main', 'File is of invalid type');
 
-            foreach($browser->elements("input[name='images[]']") as $ele) {
+            foreach ($browser->elements("input[name='images[]']") as $ele) {
                 $ele->getAttribute('value') && $images[] = $ele->getAttribute('value');
             }
 
@@ -86,7 +86,7 @@ class FilepondTest extends BrowserTestCase
                 ->waitFor('.files__ .filepond--item:nth-child(1) .filepond--action-revert-item-processing', 10)
                 ->assertSeeIn('.files__ .filepond--item:nth-child(1) .filepond--file-status-main', 'Upload complete');
 
-            foreach($browser->elements("input[name='files[]']") as $ele) {
+            foreach ($browser->elements("input[name='files[]']") as $ele) {
                 $ele->getAttribute('value') && $files[] = $ele->getAttribute('value');
             }
 
@@ -104,13 +104,13 @@ class FilepondTest extends BrowserTestCase
 
             $browser->press('Submit')->waitFor('.table tbody tr:first-child', 10);
         });
-        $images = collect($images)->map(function($item){
+        $images = collect($images)->map(function ($item) {
             return "'{$item}'";
         })->implode(',');
-        $files = collect($files)->map(function($item){
+        $files = collect($files)->map(function ($item) {
             return "'{$item}'";
         })->implode(',');
-        $this->assertDatabaseHas('posts', ['images' => DB::raw("json_array({$images})"), 'avatar' => $avatar, 'files' => DB::raw("json_array({$files})") , 'file' => $file]);
+        $this->assertDatabaseHas('posts', ['images' => DB::raw("json_array({$images})"), 'avatar' => $avatar, 'files' => DB::raw("json_array({$files})"), 'file' => $file]);
     }
 
     public function testUpdate()
@@ -146,5 +146,4 @@ class FilepondTest extends BrowserTestCase
         $post = Post::find(1);
         $this->assertTrue(empty($post->images) && empty($post->file));
     }
-
 }

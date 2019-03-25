@@ -66,7 +66,6 @@ class File extends Field
      */
     protected $uploadValidatorResponse;
 
-
     protected $deleteFiles = [];
 
     /**
@@ -76,7 +75,7 @@ class File extends Field
      */
     protected static $css = [
         '/vendor/laravel-admin-ext/la-filepond/css/filepond.min.css?v=3.8.2',
-        '/vendor/laravel-admin-ext/la-filepond/css/filepond-plugin-image-preview.min.css'
+        '/vendor/laravel-admin-ext/la-filepond/css/filepond-plugin-image-preview.min.css',
     ];
 
     protected $rules = 'file';
@@ -122,7 +121,6 @@ class File extends Field
         parent::__construct($column, $arguments);
 
         $this->setupDefaultOptions();
-
     }
 
     /**
@@ -275,7 +273,7 @@ class File extends Field
      */
     public function prepare($value)
     {
-       $this->deleteFiles  = collect((array) $this->original())->diff((array)$value)->all();
+        $this->deleteFiles = collect((array) $this->original())->diff((array) $value)->all();
 
         if (is_array($value)) {
             return tap($value, function (&$val) {
@@ -286,8 +284,9 @@ class File extends Field
         return $value;
     }
 
-    public function deleteFiles(){
-        if(!empty($this->deleteFiles)){
+    public function deleteFiles()
+    {
+        if (!empty($this->deleteFiles)) {
             $this->storage->delete($this->deleteFiles);
         }
     }
@@ -295,8 +294,8 @@ class File extends Field
     protected function setupDefaultOptions()
     {
         $defaultOptions = [
-            'instantUpload' => false,
-            'labelIdle'     => trans('filepond.label'),
+            'instantUpload'     => false,
+            'labelIdle'         => trans('filepond.label'),
             'allowImagePreview' => false,
         ];
 
@@ -306,13 +305,14 @@ class File extends Field
     public function formatInput($form)
     {
         if (!$form->input($this->column())) {
-            isset($this->attributes['multiple']) && $this->attributes['multiple'] === 'true' ?  $form->input($this->column(), []) : $form->input($this->column(), '');
+            isset($this->attributes['multiple']) && $this->attributes['multiple'] === 'true' ? $form->input($this->column(), []) : $form->input($this->column(), '');
         }
     }
 
-    protected function setupSavedCb(){
-        if(self::$injectSavedCb === false){
-            $this->form->saved(function($form){
+    protected function setupSavedCb()
+    {
+        if (self::$injectSavedCb === false) {
+            $this->form->saved(function ($form) {
                 foreach ($form->builder()->fields() as $field) {
                     if (get_class($field) == File::class) {
                         $field->deleteFiles();
@@ -572,7 +572,6 @@ formdata.append('_method', 'put');
 EOT;
         }
     }
-
 
     public function render()
     {
