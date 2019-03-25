@@ -8,6 +8,6 @@ class Post extends Model
 {
     protected $casts = [
         'images' => 'json',
-        'files' => 'json'
+        'files'  => 'json',
     ];
 }
