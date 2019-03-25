@@ -119,15 +119,16 @@ class FilepondTest extends BrowserTestCase
         File::copy(__DIR__.'/../TestFiles/sample.jpeg', storage_path('app/public/files/sample.jpeg'));
         File::copy(__DIR__.'/../TestFiles/sample.jpeg', storage_path('app/public/files/sample1.jpeg'));
         File::copy(__DIR__.'/../TestFiles/sample2.jpg', storage_path('app/public/files/sample2.jpg'));
+        File::copy(__DIR__.'/../TestFiles/sample2.jpg', storage_path('app/public/files/sample3.jpg'));
         File::copy(__DIR__.'/../TestFiles/filesTest.pdf', storage_path('app/public/files/filesTest.pdf'));
         File::copy(__DIR__.'/../TestFiles/filesTest.doc', storage_path('app/public/files/filesTest.doc'));
 
         $post = new Post();
         $post->name = 'test';
         $post->images = ['files/sample.jpeg', 'files/sample2.jpg'];
-        $post->avatar = 'files/sample1.jpeg';
+        $post->avatar = 'files/sample3.jpg';
         $post->files = ['files/filesTest.pdf', 'files/filesTest.doc'];
-        $post->file = 'files/sample.jpeg';
+        $post->file = 'files/sample1.jpeg';
         $post->save();
 
         $this->browse(function ($browser) {
@@ -145,5 +146,8 @@ class FilepondTest extends BrowserTestCase
 
         $post = Post::find(1);
         $this->assertTrue(empty($post->images) && empty($post->file));
+        $this->assertFalse(File::exists(storage_path('app/public/files/sample.jpeg')));
+        $this->assertFalse(File::exists(storage_path('app/public/files/sample2.jpg')));
+        $this->assertFalse(File::exists(storage_path('app/public/files/sample1.jpeg')));
     }
 }

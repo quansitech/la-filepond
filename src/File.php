@@ -314,7 +314,7 @@ class File extends Field
         if (self::$injectSavedCb === false) {
             $this->form->saved(function ($form) {
                 foreach ($form->builder()->fields() as $field) {
-                    if (get_class($field) == File::class) {
+                    if ($field instanceof File) {
                         $field->deleteFiles();
                     }
                 }
