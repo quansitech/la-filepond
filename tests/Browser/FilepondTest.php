@@ -75,12 +75,12 @@ class FilepondTest extends BrowserTestCase
                 ->waitFor(".files__ .filepond--item:nth-child(1) .filepond--action-remove-item[style*='opacity:1']", 10)
                 ->assertSeeIn('.files__ .filepond--item:nth-child(1) .filepond--file-status-main', 'File is of invalid type')
                 ->attach('#'.$filesElm->getAttribute('id'), __DIR__.'/../TestFiles/filesTest.doc')
-                ->waitFor(".files__ .filepond--item:nth-child(2) .filepond--action-remove-item[style*='opacity:1']", 10)
+                ->waitFor(".files__ .filepond--item:nth-child(1) .filepond--action-process-item[style*='opacity:1']", 10)
                 ->press('.files__ .filepond--item:nth-child(1) .filepond--action-process-item')
                 ->waitFor('.files__ .filepond--item:nth-child(1) .filepond--action-revert-item-processing', 10)
                 ->assertSeeIn('.files__ .filepond--item:nth-child(1) .filepond--file-status-main', 'Upload complete')
                 ->attach('#'.$filesElm->getAttribute('id'), __DIR__.'/../TestFiles/filesTest.pdf')
-                ->waitFor(".files__ .filepond--item:nth-child(2) .filepond--action-remove-item[style*='opacity:1']", 10)
+                ->waitFor(".files__ .filepond--item:nth-child(1) .filepond--action-remove-item[style*='opacity:1']", 10)
                 ->assertSeeIn('.files__ .filepond--item:nth-child(1) legend', 'filesTest.pdf')
                 ->press('.files__ .filepond--item:nth-child(1) .filepond--action-process-item')
                 ->waitFor('.files__ .filepond--item:nth-child(1) .filepond--action-revert-item-processing', 10)
@@ -95,12 +95,12 @@ class FilepondTest extends BrowserTestCase
                 ->assertSeeIn('.file .filepond--item:nth-child(1) .filepond--file-status-main', 'File is too large')
                 ->attach('#'.$fileElm->getAttribute('id'), __DIR__.'/../TestFiles/sample.jpeg')
                 ->waitFor(".file .filepond--item:first-child .filepond--action-process-item[style*='opacity:1']", 10)
-                ->assertSourceMissing('filepond--image-preview-wrapper')
+                ->assertMissing('.file .filepond--image-preview-wrapper')
                 ->press('.file .filepond--item:first-child .filepond--action-process-item')
                 ->waitFor('.file .filepond--item:first-child .filepond--action-revert-item-processing', 10)
                 ->assertSeeIn('.file .filepond--item:first-child .filepond--file-status-main', 'Upload complete');
 
-            $file = $browser->element('input[name=avatar]')->getAttribute('value');
+            $file = $browser->element('input[name=file]')->getAttribute('value');
 
             $browser->press('Submit')->waitFor('.table tbody tr:first-child', 10);
         });
@@ -118,24 +118,33 @@ class FilepondTest extends BrowserTestCase
         File::makeDirectory(storage_path('app/public/files'));
         File::copy(__DIR__.'/../TestFiles/sample.jpeg', storage_path('app/public/files/sample.jpeg'));
         File::copy(__DIR__.'/../TestFiles/sample.jpeg', storage_path('app/public/files/sample1.jpeg'));
+        File::copy(__DIR__.'/../TestFiles/sample2.jpg', storage_path('app/public/files/sample2.jpg'));
+        File::copy(__DIR__.'/../TestFiles/filesTest.pdf', storage_path('app/public/files/filesTest.pdf'));
+        File::copy(__DIR__.'/../TestFiles/filesTest.doc', storage_path('app/public/files/filesTest.doc'));
 
         $post = new Post();
         $post->name = 'test';
-        $post->images = ['files/sample.jpeg'];
+        $post->images = ['files/sample.jpeg', 'files/sample2.jpg'];
         $post->avatar = 'files/sample1.jpeg';
+        $post->files = ['files/filesTest.pdf', 'files/filesTest.doc'];
+        $post->file = 'files/sample.jpeg';
         $post->save();
 
         $this->browse(function ($browser) {
             $browser->loginAs(Administrator::find(1), 'admin')
                 ->visit('admin/filepond/1/edit')
-                ->waitFor(".images__ .filepond--item .filepond--action-remove-item[style*='opacity:1']", 10)
-                ->press('.images__ .filepond--action-remove-item')
-                ->waitUntilMissing('.images__ .filepond--action-remove-item')
+                ->waitFor(".images__ .filepond--item:nth-child(1) .filepond--action-remove-item[style*='opacity:1']", 10)
+                ->press('.images__ .filepond--item:nth-child(1) .filepond--action-remove-item')
+                ->waitUntilMissing('.images__ .filepond--item:nth-child(2) .filepond--action-remove-item')
+                ->press('.images__ .filepond--item:nth-child(1) .filepond--action-remove-item')
+                ->waitUntilMissing('.images__ .filepond--item:nth-child(1) .filepond--action-remove-item')
+                ->press('.file .filepond--item .filepond--action-remove-item')
+                ->waitUntilMissing('.file .filepond--item .filepond--action-remove-item')
                 ->press('button[type=submit]')->waitFor('.table tbody tr:first-child', 10);
         });
 
         $post = Post::find(1);
-        $this->assertTrue(empty($post->images));
+        $this->assertTrue(empty($post->images) && empty($post->file));
     }
 
 }

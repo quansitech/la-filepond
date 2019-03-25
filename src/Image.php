@@ -17,6 +17,7 @@ class Image extends File{
         self::extendPlugin(self::$imagePlugins);
 
         $this->mineType('image/*');
+        $this->options(['allowImagePreview' => true]);
     }
 
 }

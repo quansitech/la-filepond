@@ -45,9 +45,15 @@ class BrowserTestCase extends TestCase
     {
         $options = (new ChromeOptions())->addArguments([
             '--disable-gpu',
-            '--headless',
+            '--disable-impl-side-painting',
+            '--disable-gpu-sandbox',
+            '--disable-accelerated-2d-canvas',
+            '--disable-accelerated-jpeg-decoding',
             '--no-sandbox',
-            '--window-size=1920,1080',
+//            '--disable-gpu',
+            '--headless',
+//            '--no-sandbox',
+//            '--window-size=1680,1050',
         ]);
 
         return RemoteWebDriver::create(

@@ -66,6 +66,9 @@ class File extends Field
      */
     protected $uploadValidatorResponse;
 
+
+    protected $deleteFiles = [];
+
     /**
      * Css.
      *
@@ -103,6 +106,8 @@ class File extends Field
 
     protected static $injectSavingCb = false;
 
+    protected static $injectSavedCb = false;
+
     /**
      * Options for specify elements.
      *
@@ -115,6 +120,8 @@ class File extends Field
         $this->initStorage();
 
         parent::__construct($column, $arguments);
+
+        $this->setupDefaultOptions();
 
     }
 
@@ -254,6 +261,7 @@ class File extends Field
 
         $this->setupSubmittedCb();
         $this->setupSavingCb();
+        $this->setupSavedCb();
 
         return $this;
     }
@@ -267,6 +275,8 @@ class File extends Field
      */
     public function prepare($value)
     {
+       $this->deleteFiles  = collect((array) $this->original())->diff((array)$value)->all();
+
         if (is_array($value)) {
             return tap($value, function (&$val) {
                 $val = collect($val)->filter()->flatten()->all();
@@ -276,11 +286,18 @@ class File extends Field
         return $value;
     }
 
+    public function deleteFiles(){
+        if(!empty($this->deleteFiles)){
+            $this->storage->delete($this->deleteFiles);
+        }
+    }
+
     protected function setupDefaultOptions()
     {
         $defaultOptions = [
             'instantUpload' => false,
             'labelIdle'     => trans('filepond.label'),
+            'allowImagePreview' => false,
         ];
 
         $this->options($defaultOptions);
@@ -289,7 +306,19 @@ class File extends Field
     public function formatInput($form)
     {
         if (!$form->input($this->column())) {
-            $form->input($this->column(), []);
+            isset($this->attributes['multiple']) && $this->attributes['multiple'] === 'true' ?  $form->input($this->column(), []) : $form->input($this->column(), '');
+        }
+    }
+
+    protected function setupSavedCb(){
+        if(self::$injectSavedCb === false){
+            $this->form->saved(function($form){
+                foreach ($form->builder()->fields() as $field) {
+                    if (get_class($field) == File::class) {
+                        $field->deleteFiles();
+                    }
+                }
+            });
         }
     }
 
@@ -300,7 +329,7 @@ class File extends Field
                 $data = Input::all();
                 if (!array_key_exists(File::FILE_UPLOAD_FLAG, $data)) {
                     foreach ($form->builder()->fields() as $field) {
-                        if (get_class($field) == File::class) {
+                        if ($field instanceof File) {
                             $field->formatInput($form);
                         }
                     }
@@ -547,8 +576,6 @@ EOT;
 
     public function render()
     {
-        $this->setupDefaultOptions();
-
         $filepondFiles = [];
         foreach ((array) old($this->column, $this->value()) as $file) {
             if ($file) {
