@@ -2,12 +2,12 @@
 
 namespace Qs\La\Filepond;
 
-class Image extends File{
-
+class Image extends File
+{
     protected $rules = 'image';
 
     protected static $imagePlugins = [
-        'FilePondPluginImagePreview'
+        'FilePondPluginImagePreview',
     ];
 
     public function __construct($column, array $arguments = [])
@@ -19,5 +19,4 @@ class Image extends File{
         $this->mineType('image/*');
         $this->options(['allowImagePreview' => true]);
     }
-
 }
