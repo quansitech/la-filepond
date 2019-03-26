@@ -122,6 +122,7 @@ class FilepondTest extends BrowserTestCase
         File::copy(__DIR__.'/../TestFiles/sample2.jpg', storage_path('app/public/files/sample3.jpg'));
         File::copy(__DIR__.'/../TestFiles/filesTest.pdf', storage_path('app/public/files/filesTest.pdf'));
         File::copy(__DIR__.'/../TestFiles/filesTest.doc', storage_path('app/public/files/filesTest.doc'));
+        File::copy(__DIR__.'/../TestFiles/admin.php', config_path('admin.php'));
 
         $post = new Post();
         $post->name = 'test';
@@ -130,8 +131,6 @@ class FilepondTest extends BrowserTestCase
         $post->files = ['files/filesTest.pdf', 'files/filesTest.doc'];
         $post->file = 'files/sample1.jpeg';
         $post->save();
-
-        $this->app['config']->set('admin.extensions.filepond.autodelete', true);
 
         $this->browse(function ($browser) {
             $browser->loginAs(Administrator::find(1), 'admin')
