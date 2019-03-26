@@ -286,7 +286,7 @@ class File extends Field
 
     public function deleteFiles()
     {
-        if (!empty($this->deleteFiles)) {
+        if (!empty($this->deleteFiles) && Filepond::config('autodelete', false)) {
             $this->storage->delete($this->deleteFiles);
         }
     }
