@@ -86,3 +86,6 @@ $form->filepondFile(@数据库字段名, @标签名称)->size(30)
 //imageValidateSizeMinWidth、imageValidateSizeMaxWidth 为该插件使用到的配置参数，分别进行图片最小宽度和最大宽度的限制
 $form->filepondImage('images', 'images')->multiple()->options(['imageValidateSizeMinWidth' => 200, 'imageValidateSizeMaxWidth' => 400]);
 ```
+
+## 许可
+[MIT License](https://github.com/tiderjian/la-filepond/blob/master/LICENSE)
