@@ -131,6 +131,8 @@ class FilepondTest extends BrowserTestCase
         $post->file = 'files/sample1.jpeg';
         $post->save();
 
+        $this->app['config']->set('admin.extensions.filepond.autodelete', true);
+
         $this->browse(function ($browser) {
             $browser->loginAs(Administrator::find(1), 'admin')
                 ->visit('admin/filepond/1/edit')
