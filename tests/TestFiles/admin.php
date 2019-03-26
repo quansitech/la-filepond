@@ -316,8 +316,8 @@ return [
     */
     'extensions' => [
         'filepond' => [
-            'enable' => true,
-            'autodelete' => true
-        ]
+            'enable'     => true,
+            'autodelete' => true,
+        ],
     ],
 ];
