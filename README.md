@@ -6,8 +6,10 @@
 ![lincense](https://img.shields.io/github/license/tiderjian/la-filepond.svg?style=flat-square)
 ![Pull request welcome](https://img.shields.io/badge/pr-welcome-green.svg?style=flat-square)
 
+[documentation](https://github.com/tiderjian/la-filepond/blob/master/README_EN.md)
+
 ## 关于filepond for laravel-admin
-   [filepond](https://github.com/pqina/filepond)是github上的一个基于MIT开源协议的前端上传控件。其基于插件式的模式开发，具有很强的扩展能力，同时UI设计也简洁美观。而filepond foor laravel-admin就是基于该上传控件开发的la form扩展组件。
+   [filepond](https://github.com/pqina/filepond)是github上的一个基于MIT开源协议的前端上传控件。其基于插件式的模式开发，具有很强的扩展能力，同时UI设计也简洁美观。而filepond for laravel-admin就是基于该上传控件开发的la form扩展组件。
    
 
 ## 为什么要做它
