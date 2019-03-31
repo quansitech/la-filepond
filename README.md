@@ -5,6 +5,7 @@
 ![download](https://img.shields.io/packagist/dt/tiderjian/la-filepond.svg?style=flat-square)
 ![lincense](https://img.shields.io/github/license/tiderjian/la-filepond.svg?style=flat-square)
 ![Pull request welcome](https://img.shields.io/badge/pr-welcome-green.svg?style=flat-square)
+[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
 ## [中文文档](https://github.com/tiderjian/la-filepond/blob/master/README_CN.md)
 
