@@ -4,8 +4,8 @@
 ![style ci](https://img.shields.io/travis/com/tiderjian/la-filepond.svg?style=flat-square)
 ![download](https://img.shields.io/packagist/dt/tiderjian/la-filepond.svg?style=flat-square)
 ![lincense](https://img.shields.io/github/license/tiderjian/la-filepond.svg?style=flat-square)
+[![LICENSE](https://img.shields.io/badge/license-NPL%20(The%20996%20Prohibited%20License)-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 ![Pull request welcome](https://img.shields.io/badge/pr-welcome-green.svg?style=flat-square)
-[![996.icu](https://img.shields.io/badge/link-996.icu-red.svg)](https://996.icu)
 
 ## [documentation](https://github.com/tiderjian/la-filepond/blob/master/README.md)
 
@@ -91,4 +91,4 @@ $form->filepondImage('images', 'images')->multiple()->options(['imageValidateSiz
 ```
 
 ## 许可
-[MIT License](https://github.com/tiderjian/la-filepond/blob/master/LICENSE)
+[MIT License](https://github.com/tiderjian/la-filepond/blob/master/LICENSE.MIT)  AND [996ICU License](https://github.com/tiderjian/la-filepond/blob/master/LICENSE.996ICU)
