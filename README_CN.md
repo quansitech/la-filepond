@@ -4,7 +4,7 @@
 ![style ci](https://img.shields.io/travis/com/tiderjian/la-filepond.svg?style=flat-square)
 ![download](https://img.shields.io/packagist/dt/tiderjian/la-filepond.svg?style=flat-square)
 ![lincense](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)
-[![LICENSE](https://img.shields.io/badge/license-NPL%20(The%20996%20Prohibited%20License)-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
+[![LICENSE](https://img.shields.io/badge/license-Anti%20996-blue.svg)](https://github.com/996icu/996.ICU/blob/master/LICENSE)
 ![Pull request welcome](https://img.shields.io/badge/pr-welcome-green.svg?style=flat-square)
 
 ## [documentation](https://github.com/tiderjian/la-filepond/blob/master/README.md)
