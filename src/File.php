@@ -326,7 +326,7 @@ class File extends Field
     {
         if (self::$injectSavingCb === false) {
             $this->form->saving(function ($form) {
-                $data = Input::all();
+                $data = request()->all();
                 if (!array_key_exists(File::FILE_UPLOAD_FLAG, $data)) {
                     foreach ($form->builder()->fields() as $field) {
                         if ($field instanceof File) {
@@ -344,7 +344,7 @@ class File extends Field
     {
         if (self::$injectSubmittedCb === false) {
             $this->form->submitted(function ($form) {
-                $data = Input::all();
+                $data = request()->all();
 
                 if (array_key_exists(File::FILE_UPLOAD_FLAG, $data)) {
                     $field = File::getFieldFromInput($data, $form);
