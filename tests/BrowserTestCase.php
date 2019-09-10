@@ -80,6 +80,7 @@ class BrowserTestCase extends TestCase
 
     public function setUp() : void
     {
+        static::useChromedriver('/usr/local/bin/chromedriver');
         static::startChromeDriver();
         $this->makeInstalledJson();
 
